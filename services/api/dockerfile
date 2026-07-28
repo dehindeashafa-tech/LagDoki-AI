@@ -1,0 +1,27 @@
+# Use official lightweight Python image
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies (FFmpeg is required for Whisper audio processing)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements from services/api/
+COPY services/api/requirements.txt .
+
+# Install Python packages
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy backend app code and data dictionary
+COPY services/api/app ./app
+COPY data /data
+
+# Expose FastAPI port
+EXPOSE 8000
+
+# Start FastAPI app with Uvicorn
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

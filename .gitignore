@@ -1,0 +1,15 @@
+# Environment files (CRITICAL: Do not commit your secret keys!)
+.env
+*.env
+
+# Python virtual environment & cache
+venv/
+__pycache__/
+*.pyc
+
+# IDE settings
+.vscode/
+.idea/
+
+# Downloaded AI model caches
+/root/.cache/
