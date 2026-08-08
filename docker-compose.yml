@@ -15,3 +15,19 @@ services:
       - GROQ_API_KEY=${GROQ_API_KEY}
     volumes:
       - .:/app
+
+  whatsapp_bot:
+    build:
+      context: ./services/whatsapp_bot
+      dockerfile: Dockerfile
+    container_name: lagdoki_whatsapp_bot
+    restart: always
+    environment:
+      - API_URL=http://backend:8000/api/whatsapp/webhook
+    volumes:
+      - whatsapp_session:/app/session
+    depends_on:
+      - backend
+
+volumes:
+  whatsapp_session:

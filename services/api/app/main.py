@@ -8,11 +8,12 @@ BASE_DIR = Path(__file__).resolve().parent
 if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
-# Import triage module
+# Import routers
 try:
-    from routers import triage
+    from routers import triage, whatsapp
 except ModuleNotFoundError:
     import routers.triage as triage
+    import routers.whatsapp as whatsapp
 
 app = FastAPI(
     title="LagDoki-AI",
@@ -29,7 +30,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Register endpoints with /api prefix
 app.include_router(triage.router, prefix="/api")
+app.include_router(whatsapp.router, prefix="/api")
 
 @app.get("/health")
 def health_check():
